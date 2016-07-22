@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.bluetooth.leo.bluetoothcommunication.BluetoothDetailInfoActivity">
+
+    <Button
+        android:id="@+id/startConnect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始连接" />
+
+    <TextView
+        android:id="@+id/receiveData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/lostPackageNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textSize="18sp"
+        android:text="丢包个数"/>
+
+</RelativeLayout>

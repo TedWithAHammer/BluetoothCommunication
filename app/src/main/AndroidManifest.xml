@@ -3,11 +3,10 @@
     package="com.bluetooth.leo.bluetoothcommunication">
 
     <uses-feature
-        android:name="android.hardware.bluetooth_le"
-        android:required="true" />
+        android:name="android.hardware.bluetooth_le" />
+
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
-
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
@@ -16,13 +15,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".FindDeviceActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".BluetoothDetailInfoActivity"></activity>
     </application>
 
 </manifest>
