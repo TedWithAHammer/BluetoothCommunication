@@ -2,15 +2,20 @@ package com.bluetooth.leo.bluetoothcommunication;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.os.ParcelUuid;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,10 +27,13 @@ import com.leo.potato.Potato;
 import com.leo.potato.PotatoInjection;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TimerTask;
+import java.util.UUID;
+import java.util.logging.Logger;
 
 public class FindDeviceActivity extends AppCompatActivity {
-    @PotatoInjection(idStr = "begin_scan")
+    @PotatoInjection(idStr = "begin_scan", click = "beginScanDevices")
     Button beginScan;
     @PotatoInjection(idStr = "recycleView")
     RecyclerView recycleView;
@@ -33,11 +41,13 @@ public class FindDeviceActivity extends AppCompatActivity {
     boolean isBluetoothOpen = true;
     private BluetoothAdapter bluetoothAdapter;
     private static final int BLUETOOTH_REQUEST_CODE = 1001;
+    public static String uniqueUuid = "";
 
     ArrayList<BluetoothDevice> devices = new ArrayList<>();
     public static final String DEVICE_INFO = "device_info";
     public static final String BUNDLE_INFO = "bundle_info";
     private Adapter chessAdapter;
+//    private ScanBluetoothDevicesCallback scanCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +109,17 @@ public class FindDeviceActivity extends AppCompatActivity {
 
     void beginScanDevices(View v) {
         if (bluetoothAdapter != null) {
+//            final BluetoothLeScanner scan = bluetoothAdapter.getBluetoothLeScanner();
+//            scanCallback = new ScanBluetoothDevicesCallback();
+//            scan.startScan(scanCallback);
+//            handler.postDelayed(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    isScan = false;
+//                    scan.startScan(scanCallback);
+//                    chessAdapter.notifyDataSetChanged();
+//                }
+//            }, 1000);
             bluetoothAdapter.startLeScan(deviceScanResults);
             isScan = true;
             handler.postDelayed(new TimerTask() {
@@ -118,11 +139,39 @@ public class FindDeviceActivity extends AppCompatActivity {
     DeviceScanResults deviceScanResults = new DeviceScanResults();
     Handler handler = new Handler();
 
+//    class ScanBluetoothDevicesCallback extends ScanCallback {
+//        @Override
+//        public void onBatchScanResults(List<ScanResult> results) {
+//            super.  onBatchScanResults(results);
+//
+//        }
+//
+//        @Override
+//        public void onScanResult(int callbackType, ScanResult result) {
+//            super.onScanResult(callbackType, result);
+//
+//        }
+//
+//        @Override
+//        public void onScanFailed(int errorCode) {
+//            super.onScanFailed(errorCode);
+//
+//        }
+//    }
+
     class DeviceScanResults implements BluetoothAdapter.LeScanCallback {
 
         @Override
         public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
             if (isScan) {
+
+                ParcelUuid[] uuid = device.getUuids();
+//                if (uuid == null)
+//                    return;
+//                for (ParcelUuid puid : uuid) {
+//                    UUID uid = puid.getUuid();
+//                    Log.i("-------", uid.toString());
+//                }
                 String macAddress = device.getAddress();
                 if (!checkReplicated(macAddress)) {
                     devices.add(device);
